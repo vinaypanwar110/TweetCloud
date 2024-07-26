@@ -9,6 +9,7 @@ import { MdPassword } from "react-icons/md";
 import { MdDriveFileRenameOutline } from "react-icons/md";
 
 const SignUpPage = () => {
+	
 	const [formData, setFormData] = useState({
 		email: "",
 		username: "",
