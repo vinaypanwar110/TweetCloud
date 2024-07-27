@@ -11,6 +11,7 @@ import { IoSettingsOutline } from "react-icons/io5";
 import { FaUser } from "react-icons/fa";
 import { FaHeart } from "react-icons/fa6";
 import { toast } from "react-hot-toast";
+import { FaTrash } from "react-icons/fa6";
 
 const NotificationPage = () => {
   const queryClient = useQueryClient();
@@ -52,6 +53,28 @@ const NotificationPage = () => {
     },
   });
 
+  const { mutate: deleteOneNotification } = useMutation({
+    mutationFn: async (notId) => {
+      try {
+        const res = await fetch(`/api/notifications/${notId}`, {
+          method: "DELETE",
+        });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error || "Something went wrong");
+        return data;
+      } catch (error) {
+        throw new Error(error);
+      }
+    },
+    onError: (error) => {
+      toast.error(error.message);
+    },
+    onSuccess: () => {
+      toast.success("Notification deleted successfully");
+      queryClient.invalidateQueries({ queryKey: ["notifications"] });
+    },
+  });
+
   return (
     <>
       <div className="flex-[4_4_0] border-l border-r border-gray-700 min-h-screen">
@@ -80,7 +103,10 @@ const NotificationPage = () => {
           <div className="text-center p-4 font-bold">No notifications 🤔</div>
         )}
         {notifications?.map((notification) => (
-          <div className="border-b border-gray-700" key={notification._id}>
+          <div
+            className="border-b border-gray-700 p-4 flex items-center justify-between"
+            key={notification._id}
+          >
             <div className="flex gap-2 p-4">
               {notification.type === "follow" && (
                 <FaUser className="w-7 h-7 text-primary" />
@@ -109,6 +135,10 @@ const NotificationPage = () => {
                 </div>
               </Link>
             </div>
+            <FaTrash // Added delete button for individual notification
+              className="w-5 h-5 text-red-500 cursor-pointer"
+              onClick={() => deleteOneNotification(notification._id)} // Triggers delete mutation with notification ID
+            />
           </div>
         ))}
       </div>
