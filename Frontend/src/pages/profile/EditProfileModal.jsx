@@ -2,7 +2,7 @@ import { useState , useEffect } from "react";
 
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
-
+import { URL } from "../../App";
 import toast from "react-hot-toast";
 
 const EditProfileModal = ({authUser}) => {
@@ -20,7 +20,7 @@ const EditProfileModal = ({authUser}) => {
   const { mutate: updateProfile, isPending: isUpdatingProfile } = useMutation({
     mutationFn: async () => {
       try {
-        const res = await fetch(`/api/users/update`, {
+        const res = await fetch(`${URL}/users/update`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",

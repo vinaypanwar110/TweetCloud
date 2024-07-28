@@ -9,6 +9,7 @@ import { MdPassword } from "react-icons/md"; // icons for password icon
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 import axios from "axios";
+import { URL } from "../../../App";
 
 const LoginPage = () => {
   const [formData, setFormData] = useState({
@@ -19,7 +20,7 @@ const queryClient = useQueryClient();
   const { mutate, isPending, isError, error } = useMutation({
     mutationFn: async ({ username, password }) => {
       try {
-        const res = await axios.post("/api/auth/login", {
+        const res = await axios.post(`${URL}/auth/login`, {
           username,
           password,
         });

@@ -11,12 +11,14 @@ import { useQuery } from "@tanstack/react-query";
 import LoadingSpinner from "./components/common/LoadingSpinner";
 import { Navigate } from 'react-router-dom';
 
+export const URL = import.meta.env.VITE_REACT_API_URL;
+
 function App() {
   const { data: authUser, isLoading } = useQuery({	
 		queryKey: ["authUser"],
 		queryFn: async () => {
 			try {
-				const res = await fetch("/api/auth/me");
+				const res = await fetch(`${URL}/auth/me`);
 				const data = await res.json();
 				if (data.error) return null;
 				if (!res.ok) {

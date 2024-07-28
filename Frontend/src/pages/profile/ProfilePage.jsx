@@ -12,6 +12,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { formatMemberSinceDate, formatPostDate } from "../../utils/date";
 import useFollow from "../../hooks/useFollow";
 import toast from "react-hot-toast";
+import { URL } from "../../App";
 
 const ProfilePage = () => {
   useQuery({ queryKey: ["authUser"] });
@@ -39,7 +40,7 @@ const ProfilePage = () => {
     queryKey: ["userProfile"],
     queryFn: async () => {
       try {
-        const res = await fetch(`/api/users/profile/${username}`);
+        const res = await fetch(`${URL}/users/profile/${username}`);
         const data = await res.json();
         if (!res.ok) {
           throw new Error(data.error || "Something went wrong");
@@ -55,7 +56,7 @@ const ProfilePage = () => {
     useMutation({
       mutationFn: async () => {
         try {
-          const res = await fetch(`/api/users/update`, {
+          const res = await fetch(`${URL}/users/update`, {
             method: "POST",
             headers: {
               "Content-Type": "application/json",

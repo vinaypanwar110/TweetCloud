@@ -7,6 +7,7 @@ import { BiLogOut } from "react-icons/bi";
 import {  useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 import axios from "axios";
+import { URL } from "../../App";
 const Sidebar = () => { 
   // const data = {
   //   fullName: "John Doe",// remove hard coded data
@@ -17,7 +18,7 @@ const Sidebar = () => {
   const { mutate } = useMutation({
 	mutationFn: async () => {
     try {
-      const res = await axios.post("/api/auth/logout");
+      const res = await axios.post(`${URL}/auth/logout`);
       return res.authUser;
     } catch (error) {
       const errorMsg = error.response?.authUser?.error || error.message;

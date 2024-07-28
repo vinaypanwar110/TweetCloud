@@ -11,6 +11,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 import axios from 'axios';
 
+import { URL } from "../../../App";
 const SignUpPage = () => {
   const [formData, setFormData] = useState({
     email: "",
@@ -45,7 +46,7 @@ const SignUpPage = () => {
     //     toast.error(error.message);
     //   }
     try {
-      const res = await axios.post("/api/auth/signup", {
+      const res = await axios.post(`${URL}/auth/signup`, {
         email,
         username,
         fullName,

@@ -12,7 +12,7 @@ import { FaUser } from "react-icons/fa";
 import { FaHeart } from "react-icons/fa6";
 import { toast } from "react-hot-toast";
 import { FaTrash } from "react-icons/fa6";
-
+import { URL } from "../../App";
 const NotificationPage = () => {
   const queryClient = useQueryClient();
 
@@ -20,7 +20,7 @@ const NotificationPage = () => {
     queryKey: ["notifications"],
     queryFn: async () => {
       try {
-        const res = await fetch("/api/notifications");
+        const res = await fetch(`${URL}/notifications`);
         const data = await res.json();
         if (!res.ok) throw new Error(data.error || "Something went wrong");
         return data;
@@ -33,7 +33,7 @@ const NotificationPage = () => {
   const { mutate: deleteNotifications } = useMutation({
     mutationFn: async () => {
       try {
-        const res = await fetch("/api/notifications", {
+        const res = await fetch(`${URL}/notifications`, {
           method: "DELETE",
         });
         const data = await res.json();
@@ -56,7 +56,7 @@ const NotificationPage = () => {
   const { mutate: deleteOneNotification } = useMutation({
     mutationFn: async (notId) => {
       try {
-        const res = await fetch(`/api/notifications/${notId}`, {
+        const res = await fetch(`${URL}/notifications/${notId}`, {
           method: "DELETE",
         });
         const data = await res.json();
