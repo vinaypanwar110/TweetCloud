@@ -40,7 +40,7 @@ const ProfilePage = () => {
     queryKey: ["userProfile"],
     queryFn: async () => {
       try {
-        const res = await fetch(`${URL}/users/profile/${username}`);
+        const res = await fetch(`/api/users/profile/${username}`);
         const data = await res.json();
         if (!res.ok) {
           throw new Error(data.error || "Something went wrong");
@@ -56,7 +56,7 @@ const ProfilePage = () => {
     useMutation({
       mutationFn: async () => {
         try {
-          const res = await fetch(`${URL}/users/update`, {
+          const res = await fetch(`/api/users/update`, {
             method: "POST",
             headers: {
               "Content-Type": "application/json",

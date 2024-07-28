@@ -18,7 +18,7 @@ const Sidebar = () => {
   const { mutate } = useMutation({
 	mutationFn: async () => {
     try {
-      const res = await axios.post(`${URL}/auth/logout`);
+      const res = await axios.post(`/api/auth/logout`);
       return res.authUser;
     } catch (error) {
       const errorMsg = error.response?.authUser?.error || error.message;

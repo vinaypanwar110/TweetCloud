@@ -20,7 +20,7 @@ const queryClient = useQueryClient();
   const { mutate, isPending, isError, error } = useMutation({
     mutationFn: async ({ username, password }) => {
       try {
-        const res = await axios.post(`${URL}/auth/login`, {
+        const res = await axios.post(`/api/auth/login`, {
           username,
           password,
         });

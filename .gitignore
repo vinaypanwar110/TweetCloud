@@ -2,6 +2,8 @@
 /backend/.env
 /backend/node_modules/
 
+node_modules
+
 # Frontend
 /frontend/dist/
 /frontend/build/
