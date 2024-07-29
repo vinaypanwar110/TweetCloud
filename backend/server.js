@@ -24,7 +24,7 @@ const PORT = process.env.PORT || 5000;
 
 
 
-const allowedOrigins = ['https://tweetcloud.onrender.com', 'http://localhost:3000']; // Add localhost for local development
+const allowedOrigins = ['tweet-cloud-client.vercel.app','https://tweetcloud.onrender.com', 'http://localhost:3000']; // Add localhost for local development
 
 const corsOptions = {
   origin: function (origin, callback) {
