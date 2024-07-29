@@ -46,12 +46,13 @@ const SignUpPage = () => {
     //     toast.error(error.message);
     //   }
     try {
-      const res = await axios.post(`/api/auth/signup`, {
+      const res = await axios.post(`${URL}/auth/signup`, {
         email,
         username,
         fullName,
         password,
-      });
+      },
+      { withCredentials: true });
       const data = res.data;
       return data;
     } catch (error) {
