@@ -20,17 +20,18 @@ function App() {
 			try {
 
 				const res = await fetch(`${URL}/auth/me`, {
-					 credentials: 'include', 
+					credentials: 'include', 
 					headers: {
 						'Content-Type': 'application/json',
 					},
 				});
 				const data = await res.json();
-				if (data.error) return null;
 				if (!res.ok) {
+					if (res.status === 401) {
+					  return null;
+					}
 					throw new Error(data.error || "Something went wrong");
-				}
-				console.log("authUser is here:", data);
+				  }
 				return data;
 			} catch (error) {
 				throw new Error(error);
