@@ -24,7 +24,6 @@
   },
   "devDependencies": {
     "nodemon": "^3.1.4",
-    
     "@vitejs/plugin-react": "^4.3.1"
   },
   "description": ""
