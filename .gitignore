@@ -5,8 +5,8 @@
 node_modules
 
 # Frontend
-/frontend/dist/
-/frontend/build/
+/Frontend/dist/
+/Frontend/build/
 
 # Logs
 logs/
