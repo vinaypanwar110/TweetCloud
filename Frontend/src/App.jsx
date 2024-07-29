@@ -11,7 +11,7 @@ import { useQuery } from "@tanstack/react-query";
 import LoadingSpinner from "./components/common/LoadingSpinner";
 import { Navigate } from 'react-router-dom';
 
-export const URL = import.meta.env.VITE_REACT_API_URL;
+export const URL = "";
 function App() {
 	// console.log(URL);
   const { data: authUser, isLoading } = useQuery({	
@@ -19,7 +19,7 @@ function App() {
 		queryFn: async () => {
 			try {
 
-				const res = await fetch(`${URL}/auth/me`, {
+				const res = await fetch(`/api/auth/me`, {
 					credentials: 'include', 
 					headers: {
 						'Content-Type': 'application/json',
@@ -33,7 +33,8 @@ function App() {
 					throw new Error(data.error || "Something went wrong");
 				  }
 				return data;
-			} catch (error) {
+			} 
+			catch (error) {
 				throw new Error(error);
 			}
 		},

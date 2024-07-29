@@ -20,7 +20,7 @@ const NotificationPage = () => {
     queryKey: ["notifications"],
     queryFn: async () => {
       try {
-        const res = await fetch(`${URL}/notifications`,{
+        const res = await fetch(`/api/notifications`,{
           credentials: 'include', 
         });
         const data = await res.json();
@@ -35,7 +35,7 @@ const NotificationPage = () => {
   const { mutate: deleteNotifications } = useMutation({
     mutationFn: async () => {
       try {
-        const res = await fetch(`${URL}/notifications`, {
+        const res = await fetch(`/api/notifications`, {
           credentials: 'include', 
           method: "DELETE",
         });
@@ -59,7 +59,7 @@ const NotificationPage = () => {
   const { mutate: deleteOneNotification } = useMutation({
     mutationFn: async (notId) => {
       try {
-        const res = await fetch(`${URL}/notifications/${notId}`, {
+        const res = await fetch(`/api/notifications/${notId}`, {
           credentials: 'include', 
           method: "DELETE",
         });

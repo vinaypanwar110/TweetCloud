@@ -40,7 +40,7 @@ const ProfilePage = () => {
     queryKey: ["userProfile"],
     queryFn: async () => {
       try {
-        const res = await fetch(`${URL}/users/profile/${username}`,{
+        const res = await fetch(`/api/users/profile/${username}`,{
           credentials: 'include', 
         });
         const data = await res.json();
@@ -58,7 +58,7 @@ const ProfilePage = () => {
     useMutation({
       mutationFn: async () => {
         try {
-          const res = await fetch(`${URL}/users/update`, {
+          const res = await fetch(`/api/users/update`, {
             credentials: 'include', 
             method: "POST",
             headers: {

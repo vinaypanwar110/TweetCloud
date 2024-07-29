@@ -13,12 +13,10 @@
       ,
       proxy: {
         '/api': {
-          target:  process.env.VITE_REACT_API_URL,
-          changeOrigin: true,
-          // rewrite: (path) => path.replace(/^\/api/, ''),
+          target:  'http://localhost:5000',
+          changeOrigin: true
         },
       },
     }
     ,
-
   })

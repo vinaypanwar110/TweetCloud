@@ -22,7 +22,7 @@ const CreatePost = () => {
   } = useMutation({
     mutationFn: async ({ text, img }) => {
       try {
-        const res = await fetch(`${URL}/posts/create`, {
+        const res = await fetch(`/api/posts/create`, {
           credentials: 'include', 
           method: "POST",
           headers: {

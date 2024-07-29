@@ -20,7 +20,7 @@ const EditProfileModal = ({authUser}) => {
   const { mutate: updateProfile, isPending: isUpdatingProfile } = useMutation({
     mutationFn: async () => {
       try {
-        const res = await fetch(`${URL}/users/update`, {
+        const res = await fetch(`/api/users/update`, {
           credentials: 'include', 
           method: "POST",
           headers: {
