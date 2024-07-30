@@ -5,9 +5,9 @@ export const generateTokenAndSetCookie = (userId, res) => {
 		expiresIn: "15d",
 	});
 	res.cookie("jwt", token, {
-		maxAge: 15 * 24 * 60 * 60 * 1000, //millisec
-		sameSite: "none", // CSRF attacks cross-site request forgery attacks
-		secure: process.env.NODE_ENV === "production",
-		domain: process.env.NODE_ENV === "production" ? '.onrender.com' : 'localhost'
+		maxAge: 15 * 24 * 60 * 60 * 1000, //MS
+		httpOnly: true,
+		sameSite: "strict",
+		secure: process.env.NODE_ENV !== "development",
 	});
 };
