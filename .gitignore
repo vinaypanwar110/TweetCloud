@@ -1,12 +1,7 @@
 # Backend
-/backend/.env
 /backend/node_modules/
 
 node_modules
-
-# Frontend
-/Frontend/dist/
-/Frontend/build/
 
 # Logs
 logs/
@@ -20,18 +15,6 @@ typings/
 # Environment variables
 *.env
 
-# Build files
-dist/
-build/
-
 # IDE/editor directories
 .vscode/
 .idea/
-
-# OS-specific files
-.DS_Store
-Thumbs.db
-
-# React specific
-/build
-/coverage
