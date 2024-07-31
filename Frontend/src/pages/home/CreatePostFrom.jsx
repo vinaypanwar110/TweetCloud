@@ -8,7 +8,7 @@ import { Picker } from 'emoji-mart';
 // import 'emoji-mart/css/emoji-mart.css'; // Import CSS for emoji-mart
 import { URL } from "../../App";
 
-const CreatePost = () => {
+const CreatePost = ({onClose}) => {
   const [text, setText] = useState("");
   const [img, setImg] = useState(null);
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
@@ -37,6 +37,8 @@ const CreatePost = () => {
         if (!res.ok) {
           throw new Error(data.error || "Something went wrong");
         }
+        if(onClose){
+        onClose();}
         return data;  
       } catch (error) {
         throw new Error(error);

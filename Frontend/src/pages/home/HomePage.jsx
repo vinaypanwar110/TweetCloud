@@ -3,6 +3,7 @@ import { useState } from "react";
 import Posts from "../../components/common/Posts";
 import CreatePost from "./CreatePost";
 import Sidebar from "../../components/common/Sidebar";
+import CreatePostForm from "./CreatePostFrom";
 
 const HomePage = () => {
   
@@ -36,7 +37,8 @@ const HomePage = () => {
 				</div>
 
 				{/*  CREATE POST INPUT */}
-				<CreatePost />
+				{/* <CreatePost /> */}
+				<CreatePostForm/>
 
 				{/* POSTS */}
 				<Posts  feedType={feedType}/>

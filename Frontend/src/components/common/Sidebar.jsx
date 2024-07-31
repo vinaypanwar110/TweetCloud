@@ -9,6 +9,9 @@
   import toast from "react-hot-toast";
   import axios from "axios";
   import { IoBookmarks } from "react-icons/io5";
+  import CreatePostDialog from "./CreatePostDialog";
+  import { useState } from "react";
+  
   const Sidebar = () => {
     const queryClient = useQueryClient();
     const { mutate } = useMutation({
@@ -37,10 +40,27 @@
       },
     });
 
+
+
     const { data: authUser } = useQuery({ queryKey: ["authUser"] });
 
+
+    const [isCreatePostOpen, setIsCreatePostOpen] = useState(false);
+
+  const handleOpenCreatePost = () => {
+    setIsCreatePostOpen(true);
+  };
+
+  const handleCloseCreatePost = () => {
+    setIsCreatePostOpen(false);
+  };
+
     return (
-      <div className="md:flex-[2_2_0] w-18 max-w-52">
+      <>
+       {isCreatePostOpen && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 z-40" onClick={handleCloseCreatePost}></div>
+      )}
+      <div className={`md:flex-[2_2_0] w-18 max-w-52`}>
         <div className="sticky top-0 left-0 h-screen flex flex-col border-r border-gray-700 w-20 md:w-full">
           <Link to="/" className="flex justify-center md:justify-start">
             <XSvg className="px-2 w-12 h-12 rounded-full fill-white hover:bg-stone-900" />
@@ -93,6 +113,15 @@
             </Link>
           </li>
           </ul>
+          
+        <div className="mt-100 p-4">
+            <button
+              className="btn btn-primary rounded-full text-white w-full h-12 text-lg font-bold"
+              onClick={handleOpenCreatePost}
+            >
+              Post
+            </button>
+          </div>
           {authUser && (
             <Link
               to={`/profile/${authUser.username}`}
@@ -121,7 +150,10 @@
             </Link>
           )}
         </div>
+        {isCreatePostOpen && <CreatePostDialog onClose={handleCloseCreatePost} />}
       </div>
+      </>
     );
+    
   };
   export default Sidebar;
