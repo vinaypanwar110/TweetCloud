@@ -139,16 +139,20 @@ export const updateUserProfile = async (req, res) => {
       user.password = await bcrypt.hash(newPassword, salt);
     }
     if (profileImg) {
-      if(user.profileImg){
-          await cloudinary.uploader.destroy(user.profileImg.split("/").pop().split(".")[0]);
+      if (user.profileImg) {
+        await cloudinary.uploader.destroy(
+          user.profileImg.split("/").pop().split(".")[0]
+        );
       }
       const uploadedImage = await cloudinary.uploader.upload(profileImg);
       profileImg = uploadedImage.secure_url;
     }
     if (coverImg) {
-      if(user.coverImg){
-        await cloudinary.uploader.destroy(user.coverImg.split("/").pop().split(".")[0]);
-    }
+      if (user.coverImg) {
+        await cloudinary.uploader.destroy(
+          user.coverImg.split("/").pop().split(".")[0]
+        );
+      }
       const uploadedImage = await cloudinary.uploader.upload(coverImg);
       coverImg = uploadedImage.secure_url;
     }
@@ -168,6 +172,18 @@ export const updateUserProfile = async (req, res) => {
     return res.status(200).json({ user });
   } catch (error) {
     console.log("error in updateuserprofile", error.message);
+    res.status(500).json({ error: error.message });
+  }
+};
+export const searchUsers = async (req, res) => {
+  const { username } = req.query;
+  try {
+    const users = await User.find({
+      username: new RegExp(username, "i"),
+    }).select("-password");
+    res.status(200).json(users);
+  } catch (error) {
+    console.log("Error in searchUsers: ", error.message);
     res.status(500).json({ error: error.message });
   }
 };

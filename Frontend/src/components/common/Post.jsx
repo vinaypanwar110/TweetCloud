@@ -1,7 +1,7 @@
 import { FaRegComment } from "react-icons/fa";
 import { BiRepost } from "react-icons/bi";
 import { FaRegHeart } from "react-icons/fa";
-import { FaRegBookmark } from "react-icons/fa6";
+import { FaRegBookmark, FaBookmark } from "react-icons/fa6";
 import { FaTrash } from "react-icons/fa";
 import { useState } from "react";
 import { Link } from "react-router-dom";
@@ -9,25 +9,49 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "react-hot-toast";
 import LoadingSpinner from "./LoadingSpinner";
 import { formatPostDate } from "../../utils/date";
-import { URL } from "../../App";
+import axios from "axios";
 const Post = ({ post }) => {
   const [comment, setComment] = useState("");
+  const [retweet, setRetweet] = useState(0);
   const queryClient = useQueryClient();
   const { data: authUser } = useQuery({ queryKey: ["authUser"] }); //
 
-  
   const postOwner = post.user;
   const isLiked = post.likes.includes(authUser._id);
   const isMyPost = authUser._id === post.user._id;
   const formattedDate = formatPostDate(post.createdAt);
 
+  const isBookmarked = authUser.bookmarks.includes(post._id);
 
+  const { mutate: toggleBookmark, isPending: isBookmarking } = useMutation({
+    mutationFn: async () => {
+      const url = isBookmarked
+        ? `/api/bookmarks/remove/${post._id}`
+        : `/api/bookmarks/add/${post._id}`;
+      await axios.post(url);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["bookmarks"] });
+      queryClient.invalidateQueries({ queryKey: ["posts"] });
+      toast.success(
+        isBookmarked ? "Bookmark removed" : "Post bookmarked successfully"
+      );
+    },
+    onError: (error) => {
+      toast.error(error.message);
+    },
+  });
+
+  const handleBookmarkPost = () => {
+    if (isBookmarking) return;
+    toggleBookmark();
+  };
 
   const { mutate: deletePost, isPending: isDeleting } = useMutation({
     mutationFn: async () => {
       try {
         const res = await fetch(`/api/posts/${post._id}`, {
-          credentials: 'include', 
+          credentials: "include",
           method: "DELETE",
         });
         const data = await res.json();
@@ -49,7 +73,7 @@ const Post = ({ post }) => {
     mutationFn: async () => {
       try {
         const res = await fetch(`/api/posts/like/${post._id}`, {
-          credentials: 'include', 
+          credentials: "include",
           method: "POST",
         });
         const data = await res.json();
@@ -81,7 +105,7 @@ const Post = ({ post }) => {
     mutationFn: async () => {
       try {
         const res = await fetch(`/api/posts/comment/${post._id}`, {
-          credentials: 'include', 
+          credentials: "include",
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -99,23 +123,21 @@ const Post = ({ post }) => {
     },
     onSuccess: () => {
       toast.success("Comment posted successfully");
-			setComment("");
-			queryClient.invalidateQueries({ queryKey: ["posts"] });
+      setComment("");
+      queryClient.invalidateQueries({ queryKey: ["posts"] });
     },
     onError: () => {
       toast.error(error.message);
     },
   });
 
-
-
   const handleDeletePost = () => {
     deletePost();
   };
   const handlePostComment = (e) => {
     e.preventDefault();
-		if (isCommenting) return;
-		commentPost();
+    if (isCommenting) return;
+    commentPost();
   };
   const handleLikePost = () => {
     if (isLiking) {
@@ -123,8 +145,10 @@ const Post = ({ post }) => {
     }
     likePost();
   };
-
-  
+   const handleRetweet = () => {
+    // retweet += 1;
+     setRetweet(retweet);
+ };
 
   return (
     <>
@@ -250,9 +274,9 @@ const Post = ({ post }) => {
                 </form>
               </dialog>
               <div className="flex gap-1 items-center group cursor-pointer">
-                <BiRepost className="w-6 h-6  text-slate-500 group-hover:text-green-500" />
+                <BiRepost onClick={handleRetweet} className="w-6 h-6  text-slate-500 group-hover:text-green-500" />
                 <span className="text-sm text-slate-500 group-hover:text-green-500">
-                  0
+                  {retweet}
                 </span>
               </div>
               <div
@@ -277,8 +301,23 @@ const Post = ({ post }) => {
                 </span>
               </div>
             </div>
-            <div className="flex w-1/3 justify-end gap-2 items-center">
+            {/* <div className="flex w-1/3 justify-end gap-2 items-center">
               <FaRegBookmark className="w-4 h-4 text-slate-500 cursor-pointer" />
+            </div> */}
+            <div className="flex items-center gap-3">
+            {isBookmarking && <LoadingSpinner size="sm" />}
+              {!isBookmarked && !isBookmarking && (
+                <FaRegBookmark
+                  className="hover:text-yellow-500 cursor-pointer"
+                  onClick={handleBookmarkPost}
+                />
+              )}
+              {isBookmarked && !isBookmarking && (
+                <FaBookmark
+                  className="hover:text-yellow-500 cursor-pointer"
+                  onClick={handleBookmarkPost}
+                />
+              )}
             </div>
           </div>
         </div>

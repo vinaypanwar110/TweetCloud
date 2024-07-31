@@ -7,6 +7,7 @@ import authRoutes from "./routes/authRoutes.js";
 import userRoutes from "./routes/userRoutes.js";
 import postRoutes from "./routes/postRoutes.js";
 import notificationRoutes from "./routes/notificationRoutes.js";
+import bookmarkRoutes from "./routes/bookmarkRoutes.js";
 import connectMongoDB from "./db/connectMongoDB.js";
 import cors from "cors";
 
@@ -34,14 +35,15 @@ app.use("/api/auth", authRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/posts", postRoutes);
 app.use("/api/notifications", notificationRoutes);
+app.use("/api/bookmarks", bookmarkRoutes);
 
-if (process.env.NODE_ENV === "production") {
-	app.use(express.static(path.join(__dirname, "/Frontend/dist")));
+// if (process.env.NODE_ENV === "production") {
+// 	app.use(express.static(path.join(__dirname, "/Frontend/dist")));
 
-	app.get("*", (req, res) => {
-		res.sendFile(path.resolve(__dirname, "Frontend", "dist", "index.html"));
-	});
-}
+// 	app.get("*", (req, res) => {
+// 		res.sendFile(path.resolve(__dirname, "Frontend", "dist", "index.html"));
+// 	});
+// }
 
 app.listen(PORT, () => {
   console.log(`server is running at ${PORT}`);

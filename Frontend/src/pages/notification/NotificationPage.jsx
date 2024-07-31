@@ -12,9 +12,11 @@ import { FaUser } from "react-icons/fa";
 import { FaHeart } from "react-icons/fa6";
 import { toast } from "react-hot-toast";
 import { FaTrash } from "react-icons/fa6";
-import { URL } from "../../App";
+import { useNavigate } from "react-router-dom";
+import { FaArrowLeft } from "react-icons/fa6";
 const NotificationPage = () => {
   const queryClient = useQueryClient();
+  const navigate = useNavigate();
 
   const { data: notifications, isLoading } = useQuery({
     queryKey: ["notifications"],
@@ -82,7 +84,12 @@ const NotificationPage = () => {
   return (
     <>
       <div className="flex-[4_4_0] border-l border-r border-gray-700 min-h-screen">
+    
+
         <div className="flex justify-between items-center p-4 border-b border-gray-700">
+        <button onClick={() => navigate(-1)} className="flex items-center">
+                  <FaArrowLeft className="w-4 h-4" />
+                </button>
           <p className="font-bold">Notifications</p>
           <div className="dropdown ">
             <div tabIndex={0} role="button" className="m-1">

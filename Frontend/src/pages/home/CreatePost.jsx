@@ -2,13 +2,16 @@ import { CiImageOn } from "react-icons/ci";
 import { BsEmojiSmileFill } from "react-icons/bs";
 import { useRef, useState } from "react";
 import { IoCloseSharp } from "react-icons/io5";
-
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "react-hot-toast";
+import { Picker } from 'emoji-mart';
+// import 'emoji-mart/css/emoji-mart.css'; // Import CSS for emoji-mart
 import { URL } from "../../App";
+
 const CreatePost = () => {
   const [text, setText] = useState("");
   const [img, setImg] = useState(null);
+  const [showEmojiPicker, setShowEmojiPicker] = useState(false);
   const imgRef = useRef(null);
 
   const { data: authUser } = useQuery({ queryKey: ["authUser"] });
@@ -34,25 +37,18 @@ const CreatePost = () => {
         if (!res.ok) {
           throw new Error(data.error || "Something went wrong");
         }
-        return data;
+        return data;  
       } catch (error) {
         throw new Error(error);
       }
     },
     onSuccess: () => {
-      setText("");// reset text and img to null after the submit 
+      setText(""); // reset text and img to null after the submit 
       setImg(null);
       toast.success("Post created successfully");
-      queryClient.invalidateQueries({ queryKey: ["posts"] }); // invalid the query to update the page
+      queryClient.invalidateQueries({ queryKey: ["posts"] }); // invalidate the query to update the page
     },
   });
-
-  // const isPending = false;
-  // const isError = false;
-
-  const data = {
-    profileImg: "/avatars/boy1.png",
-  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -67,11 +63,15 @@ const CreatePost = () => {
         setImg(reader.result);
       };
       reader.readAsDataURL(file);
-    }
+    } 
   };
 
+  // const handleEmojiSelect = (emoji) => {
+  //   setText(prevInput => prevInput + emoji.native);
+  // };
+
   return (
-    <div className="flex p-4 items-start gap-4 border-b border-gray-700">
+    <div className="relative flex p-4 items-start gap-4 border-b border-gray-700">
       <div className="avatar">
         <div className="w-8 rounded-full">
           <img src={authUser.profileImg || "/avatar-placeholder.png"} />
@@ -79,7 +79,7 @@ const CreatePost = () => {
       </div>
       <form className="flex flex-col gap-2 w-full" onSubmit={handleSubmit}>
         <textarea
-          className="textarea w-full p-0 text-lg resize-none border-none focus:outline-none  border-gray-800"
+          className="textarea w-full p-0 text-lg resize-none border-none focus:outline-none border-gray-800"
           placeholder="What is happening?!"
           value={text}
           onChange={(e) => setText(e.target.value)}
@@ -100,13 +100,21 @@ const CreatePost = () => {
           </div>
         )}
 
-        <div className="flex justify-between border-t py-2 border-t-gray-700">
+        <div className="relative flex justify-between border-t py-2 border-t-gray-700">
           <div className="flex gap-1 items-center">
             <CiImageOn
               className="fill-primary w-6 h-6 cursor-pointer"
               onClick={() => imgRef.current.click()}
             />
-            <BsEmojiSmileFill className="fill-primary w-5 h-5 cursor-pointer" />
+            <BsEmojiSmileFill
+              className="fill-primary w-5 h-5 cursor-pointer"
+              // onClick={() => setShowEmojiPicker(prev => !prev)} // Toggle emoji picker
+            />
+            {/* {showEmojiPicker && (
+              <div className="absolute z-10 top-full left-0">
+                <Picker onSelect={handleEmojiSelect} />
+              </div>
+            )} */}
           </div>
           <input
             type="file"
@@ -124,4 +132,5 @@ const CreatePost = () => {
     </div>
   );
 };
+
 export default CreatePost;
